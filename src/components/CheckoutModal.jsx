@@ -5,11 +5,12 @@ import { SHIPPING } from '../lib/config.js';
 import { COLLECTION } from '../lib/banking.js';
 import { createOrder } from '../lib/orders.js';
 import { updateStatus } from '../lib/orders.js';
+import { Truck, Box as BoxIcon, Lock, Check } from './Icon.jsx';
 
 export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
   const { who, tier } = selection;
   const [step, setStep] = useState(1);
-  const [fulfillment, setFulfillment] = useState('delivery'); // 'delivery' | 'collection'
+  const [fulfillment, setFulfillment] = useState('delivery');
   const [form, setForm] = useState({
     fn: '', ln: '', email: '', phone: '', addr: '', city: '', zip: '', note: '',
     collectorName: '', collectorPhone: '',
@@ -77,7 +78,6 @@ export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
   const pay = async () => {
     setSubmitting(true);
     try {
-      // Mark as paid — fires status-change webhook → customer paid email + receipt PDF.
       const paid = await updateStatus(pending.id, 'paid');
       setPending(paid);
       setStep(3);
@@ -90,11 +90,11 @@ export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
   if (!who || !tier) return null;
 
   return (
-    <Modal open={open} onClose={close} title={step === 3 ? '' : step === 2 ? 'Payment' : 'Your details'}>
+    <Modal open={open} onClose={close} title={step === 3 ? '' : step === 2 ? 'Payment' : 'Your details'} tone="pink">
       {step < 3 && (
         <div className="mb-5 flex gap-1.5">
           {[1, 2, 3].map((n) => (
-            <div key={n} className={`h-1 flex-1 rounded-full transition ${n <= step ? 'bg-coral' : 'bg-line'}`} />
+            <div key={n} className={`h-1.5 flex-1 rounded-full transition ${n <= step ? 'bg-pink-500' : 'bg-pink-100'}`} />
           ))}
         </div>
       )}
@@ -108,14 +108,14 @@ export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
             <Recap who={who.id} tier={tier} fee={fee} total={total} fulfillment={fulfillment} />
 
             {/* fulfillment toggle */}
-            <div className="mb-4">
-              <label className="mb-1.5 block text-[13px] font-bold">How would you like to receive it?</label>
-              <div className="grid grid-cols-2 gap-2 rounded-xl border border-line bg-white p-1">
-                <ToggleBtn active={fulfillment === 'delivery'}   onClick={() => setFulfillment('delivery')}   label="🚚 Delivery"   sub={`+R${SHIPPING}`} />
-                <ToggleBtn active={fulfillment === 'collection'} onClick={() => setFulfillment('collection')} label="🏪 Collection" sub="Free" />
+            <div className="mb-5">
+              <label className="mb-2 block text-[13px] font-bold">How would you like to receive it?</label>
+              <div className="grid grid-cols-2 gap-2 rounded-2xl bg-pink-50 p-1.5">
+                <ToggleBtn active={fulfillment === 'delivery'}   onClick={() => setFulfillment('delivery')}   Icon={Truck}   label="Delivery"   sub={`+R${SHIPPING}`} />
+                <ToggleBtn active={fulfillment === 'collection'} onClick={() => setFulfillment('collection')} Icon={BoxIcon} label="Collection" sub="Free" />
               </div>
               {fulfillment === 'collection' && (
-                <p className="mt-2 text-[12px] opacity-60 leading-relaxed">
+                <p className="mt-2 text-[12px] opacity-65 leading-relaxed">
                   Collect from <b>{COLLECTION.name}</b> · {COLLECTION.hours}
                 </p>
               )}
@@ -145,12 +145,16 @@ export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
 
             <Field label="Colour / interest note (optional)" v={form.note} onChange={(v) => setForm((f) => ({ ...f, note: v }))} placeholder="e.g. loves pink & dinosaurs" />
 
-            {err.submit && <p className="mb-3 text-[13px] text-coral">{err.submit}</p>}
+            {err.submit && <p className="mb-3 text-[13px] font-semibold text-pink-600">{err.submit}</p>}
 
             <button onClick={next} disabled={submitting}
-              className="mt-2 w-full rounded-2xl bg-grape py-4 font-extrabold text-white transition hover:brightness-110 hover:-translate-y-0.5 disabled:opacity-60">
-              {submitting ? 'Placing order…' : 'Continue to payment →'}
+              className="mt-2 w-full rounded-pill bg-pink-500 py-4 font-display text-[16px] font-semibold text-white shadow-pop transition hover:-translate-y-0.5 hover:bg-pink-600 disabled:opacity-60 disabled:translate-y-0">
+              {submitting ? 'Placing order…' : `Continue to payment · R${total} →`}
             </button>
+
+            <div className="mt-4 flex items-center justify-center gap-1.5 text-[11.5px] font-semibold opacity-55">
+              <Lock style={{ width: 12, height: 12 }} /> Secure checkout · Your details are encrypted
+            </div>
           </motion.div>
         )}
 
@@ -158,19 +162,27 @@ export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
           <motion.div key="s2"
             initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
             transition={{ duration: .22 }}>
-            <div className="mb-4 rounded-2xl border border-line bg-white p-7 text-center">
-              <div className="text-[22px] font-extrabold tracking-tight" style={{ color: '#002f5f' }}>payfast</div>
-              <div className="mt-2 text-[12px] opacity-50">Amount due from <b>{pending.customers?.name}</b></div>
-              <div className="font-display text-[54px] font-extrabold leading-none my-2.5">R{total}</div>
-              <div className="text-[12px] opacity-50">{who.id} Mystery Scoop · {tier.scoops} scoop{tier.scoops > 1 ? 's' : ''} · {pending.order_number}</div>
+
+            <div className="mb-4 overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+              <div className="px-6 py-6 text-center"
+                   style={{ background: 'linear-gradient(180deg, #fff5f6 0%, #ffe1eb 100%)' }}>
+                <div className="text-[20px] font-extrabold tracking-tight text-pink-700">PayFast</div>
+                <div className="mt-1.5 text-[12px] opacity-60">Amount due from <b className="text-ink">{pending.customers?.name}</b></div>
+                <div className="font-display text-[54px] font-bold leading-none my-3 text-ink">R{total}</div>
+                <div className="text-[12px] opacity-60">{who.id} Mystery Scoop · {tier.scoops} scoop{tier.scoops > 1 ? 's' : ''} · {pending.order_number}</div>
+              </div>
+              <div className="flex items-center justify-center gap-4 border-t border-line px-6 py-3 text-[11px] uppercase tracking-widest opacity-60">
+                <span>💳 Card</span><span>·</span><span>Instant EFT</span><span>·</span><span>Snapscan</span>
+              </div>
             </div>
+
             <button onClick={pay} disabled={submitting}
-              className="w-full rounded-2xl py-4 font-extrabold text-ink transition hover:-translate-y-0.5 disabled:opacity-60"
-              style={{ background: 'var(--sage)', color: '#07352a' }}>
+              className="w-full rounded-pill bg-pink-500 py-4 font-display text-[16px] font-semibold text-white shadow-pop transition hover:-translate-y-0.5 hover:bg-pink-600 disabled:opacity-60 disabled:translate-y-0">
               {submitting ? 'Processing…' : `🔒 Pay R${total} now`}
             </button>
-            <p className="mt-3 text-center text-[11px] leading-relaxed opacity-50">
-              💳 Card · Instant EFT · Prototype — no real charge is made
+
+            <p className="mt-3 text-center text-[11px] leading-relaxed opacity-55">
+              Prototype — no real charge is made. You'll get a receipt + tracking email.
             </p>
           </motion.div>
         )}
@@ -187,37 +199,59 @@ export default function CheckoutModal({ open, onClose, selection, onSuccess }) {
   );
 }
 
-function ToggleBtn({ active, onClick, label, sub }) {
+function ToggleBtn({ active, onClick, Icon, label, sub }) {
   return (
     <button onClick={onClick}
-      className={`rounded-lg px-3 py-2.5 text-left transition ${active ? 'bg-grape text-white' : 'opacity-70 hover:opacity-100'}`}>
-      <div className="text-[14px] font-bold">{label}</div>
-      <div className={`text-[11px] ${active ? 'opacity-80' : 'opacity-60'}`}>{sub}</div>
+      className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left transition ${
+        active
+          ? 'bg-pink-500 text-white shadow-soft'
+          : 'bg-white text-ink hover:bg-pink-100'
+      }`}>
+      <span className={`grid h-8 w-8 place-items-center rounded-lg ${active ? 'bg-white/20' : 'bg-pink-100 text-pink-500'}`}>
+        {Icon && <Icon style={{ width: 16, height: 16 }} />}
+      </span>
+      <div>
+        <div className="text-[14px] font-bold leading-tight">{label}</div>
+        <div className={`text-[11px] leading-tight ${active ? 'opacity-90' : 'opacity-60'}`}>{sub}</div>
+      </div>
     </button>
   );
 }
 
 function Recap({ who, tier, fee, total, fulfillment }) {
   return (
-    <div className="mb-5 rounded-2xl border border-line bg-white px-5 py-4">
-      <Row l={`${who} mystery scoop box`} r={`R${tier.price}`} />
-      <Row l={`${tier.scoops} scoop${tier.scoops > 1 ? 's' : ''} · up to ${tier.scoops * 12} items`} r="" />
-      <Row l={fulfillment === 'collection' ? 'Collection · Free' : 'Delivery · Courier Guy · 2–4 days'} r={fee ? `R${fee}` : 'Free'} />
-      <div className="mt-3 border-t border-dashed border-line pt-3">
-        <Row big l="Total" r={`R${total}`} />
+    <div className="mb-5 overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+      <div className="flex items-center gap-3 border-b border-line px-5 py-3"
+           style={{ background: 'linear-gradient(180deg, #fff5f6 0%, #ffe1eb 100%)' }}>
+        <span className="grid h-8 w-8 place-items-center rounded-lg bg-pink-500 text-white">
+          <BoxIcon style={{ width: 14, height: 14 }} />
+        </span>
+        <div>
+          <div className="text-[14px] font-extrabold leading-tight">Your order</div>
+          <div className="text-[11px] opacity-60 leading-tight">{who} · {tier.scoops} scoop{tier.scoops > 1 ? 's' : ''}</div>
+        </div>
+      </div>
+      <div className="px-5 py-4">
+        <Row l={`${who} mystery scoop box`} r={`R${tier.price}`} />
+        <Row l={`${tier.scoops} scoop${tier.scoops > 1 ? 's' : ''} · up to ${tier.scoops * 12} items`} r="" />
+        <Row l={fulfillment === 'collection' ? 'Collection · Free' : 'Delivery · Courier Guy · 2–4 days'} r={fee ? `R${fee}` : 'Free'} />
+        <div className="mt-3 flex items-center justify-between border-t border-dashed border-line pt-3">
+          <span className="font-display text-lg font-bold">Total</span>
+          <span className="font-display text-lg font-bold text-pink-600">R{total}</span>
+        </div>
       </div>
     </div>
   );
 }
-function Row({ l, r, big }) {
+function Row({ l, r }) {
   return (
-    <div className={`flex justify-between gap-3 ${big ? 'font-display font-extrabold text-lg' : 'mb-1.5 text-[14.5px] opacity-75'}`}>
-      <span>{l}</span><span>{r}</span>
+    <div className="mb-1.5 flex justify-between gap-3 text-[14px] opacity-80">
+      <span>{l}</span><span className="font-semibold">{r}</span>
     </div>
   );
 }
 function Field({ label, v, onChange, err, placeholder, type = 'text', textarea }) {
-  const cls = `w-full rounded-xl border bg-white px-4 py-3 text-[15px] outline-none transition focus:border-grape ${err ? 'border-coral' : 'border-line'}`;
+  const cls = `w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-ink placeholder:text-ink/40 outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-200 ${err ? 'border-pink-500 ring-2 ring-pink-100' : 'border-line'}`;
   return (
     <div className="mb-3.5">
       <label className="mb-1.5 block text-[13px] font-bold">{label}</label>
@@ -236,20 +270,23 @@ function Success({ o, onDone }) {
       <motion.div
         initial={{ scale: 0 }} animate={{ scale: 1 }}
         transition={{ type: 'spring', stiffness: 250, damping: 14 }}
-        className="mx-auto mb-4 grid h-20 w-20 place-items-center rounded-full text-4xl text-white"
-        style={{ background: 'var(--sage)' }}>✓</motion.div>
-      <h2 className="text-2xl font-extrabold mb-1.5">Yay, it's on its way! 🎉</h2>
+        className="mx-auto mb-4 grid h-20 w-20 place-items-center rounded-full text-white shadow-pop"
+        style={{ background: 'linear-gradient(135deg, #ff8fb4, #ef3a72)' }}>
+        <Check style={{ width: 32, height: 32, strokeWidth: 3 }} />
+      </motion.div>
+      <h2 className="font-display text-2xl font-bold mb-1.5">Yay, it's on its way! 🎉</h2>
       <p className="opacity-70 mb-1">Thanks {fn}! We're getting your scoop packed now.</p>
       <p className="opacity-70 mb-1">Your order number is</p>
-      <div className="font-display text-2xl font-extrabold text-grape mb-4">{o.order_number}</div>
+      <div className="font-display text-2xl font-bold text-pink-600 mb-4">{o.order_number}</div>
 
       <div className="mb-4 overflow-hidden rounded-2xl border border-line text-left bg-white">
-        <div className="border-b border-line px-5 py-3 text-[13px]" style={{ background: '#f5f0fc' }}>
+        <div className="border-b border-line px-5 py-3 text-[13px]"
+             style={{ background: 'linear-gradient(180deg, #fff5f6 0%, #ffe1eb 100%)' }}>
           <b>📧 To: {o.customers?.email}</b><br />
           <span className="opacity-60">Subject: Payment confirmed — order {o.order_number}</span>
         </div>
         <div className="px-5 py-4">
-          <div className="mb-2 font-display text-[17px] font-extrabold">Payment confirmed! 🥄</div>
+          <div className="mb-2 font-display text-[17px] font-bold">Payment confirmed! 🥄</div>
           <p className="text-[14px] opacity-75 leading-relaxed mb-1">Hi {fn}! Your <b>{o.box_type}</b> mystery box ({o.scoop_size} scoop{o.scoop_size>1?'s':''}) is packed with love.</p>
           <p className="text-[14px] opacity-75 leading-relaxed mb-1"><b>Total paid:</b> R{Number(o.total).toFixed(0)} · {isCollection ? <>Ready to collect from <b>{COLLECTION.name}</b></> : <>2–4 days via Courier Guy</>}</p>
           <p className="text-[14px] opacity-75 leading-relaxed">Your receipt is attached. 💌</p>
@@ -257,7 +294,7 @@ function Success({ o, onDone }) {
       </div>
 
       <button onClick={onDone}
-        className="w-full rounded-2xl bg-ink py-3.5 font-bold text-white transition hover:brightness-125">
+        className="w-full rounded-pill bg-ink py-3.5 font-bold text-white transition hover:brightness-125">
         Done
       </button>
     </div>
