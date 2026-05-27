@@ -3,9 +3,51 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SHIPPING, TIERS, WHO, GALLERY } from '../lib/config.js';
 import * as Icons from './Icon.jsx';
 import { Truck, Lock, Flag, Camera, StarFill, Shield, YocoMark, CourierMark, Check, Box as BoxIcon } from './Icon.jsx';
-import { DoodleStar, DoodleSparkle } from './Doodles.jsx';
+import { DoodleStar, DoodleSparkle, DoodleHeart, DoodleBow } from './Doodles.jsx';
 import Placeholder from './Placeholder.jsx';
 import Reveal from './Reveal.jsx';
+
+const ACCENTS = {
+  star:    DoodleStar,
+  hearts:  DoodleHeart,
+  sparkle: DoodleSparkle,
+  bow:     DoodleBow,
+};
+
+function GalleryCard({ item, size = 'main' }) {
+  const Accent = ACCENTS[item.accent];
+  const isMain = size === 'main';
+  return (
+    <div className="relative h-full w-full overflow-hidden"
+         style={{ background: item.bg, borderRadius: isMain ? 18 : 12 }}>
+      {/* accent doodle */}
+      {Accent && (
+        <Accent
+          className="absolute text-pink-500/55 pointer-events-none"
+          style={isMain
+            ? { top: 16,  left: 16,  width: 28, height: 28 }
+            : { top: 6,   left: 6,   width: 14, height: 14 }}
+        />
+      )}
+      {/* product image */}
+      <img
+        src={item.src}
+        alt={item.label}
+        loading="lazy"
+        className={`absolute inset-0 h-full w-full object-contain ${isMain ? 'p-6' : 'p-1.5'}`}
+        style={{
+          filter: 'drop-shadow(0 14px 18px rgba(207,41,95,.22)) drop-shadow(0 6px 8px rgba(31,19,37,.14))',
+        }}
+        draggable={false}
+      />
+      {isMain && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-pill bg-white/85 backdrop-blur px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-pink-700">
+          {item.label}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Builder({ selection, setSelection, onCheckout }) {
   const { who, tier } = selection;
@@ -37,21 +79,18 @@ export default function Builder({ selection, setSelection, onCheckout }) {
           {/* gallery */}
           <Reveal>
             <div className="overflow-hidden rounded-card border border-line bg-white p-2 shadow-soft" style={{ aspectRatio: '1 / 1' }}>
-              {GALLERY[activeThumb]?.src ? (
-                <img src={GALLERY[activeThumb].src} alt={GALLERY[activeThumb].label}
-                     className="h-full w-full rounded-[16px] object-cover transition duration-500" loading="lazy" />
+              {GALLERY[activeThumb] ? (
+                <GalleryCard item={GALLERY[activeThumb]} size="main" />
               ) : (
-                <Placeholder label={GALLERY[activeThumb]?.label || 'Box photo'} />
+                <Placeholder label="Box photo" />
               )}
             </div>
             <div className="mt-3 grid grid-cols-4 gap-2.5">
               {GALLERY.map((g, i) => (
                 <button key={i} onClick={() => setActiveThumb(i)}
-                        className={`overflow-hidden rounded-xl border transition ${i === activeThumb ? 'border-pink-500 ring-2 ring-pink-200' : 'border-line opacity-65 hover:opacity-100'}`}
+                        className={`overflow-hidden rounded-xl border transition ${i === activeThumb ? 'border-pink-500 ring-2 ring-pink-200' : 'border-line opacity-70 hover:opacity-100'}`}
                         style={{ aspectRatio: '1 / 1' }} aria-label={g.label}>
-                  {g.src
-                    ? <img src={g.src} alt={g.label} className="h-full w-full object-cover" loading="lazy" />
-                    : <Placeholder label={`#${i + 1}`} deep className="border-0 !rounded-none" />}
+                  <GalleryCard item={g} size="thumb" />
                 </button>
               ))}
             </div>

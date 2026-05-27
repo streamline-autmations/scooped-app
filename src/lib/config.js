@@ -54,10 +54,11 @@ export const FAQS = [
     a: "It's our most-ordered use case. Add a gift note at checkout and we'll include a hand-written card. The unboxing video we send you afterward is perfect for sharing on the day." },
 ];
 
-// "PICK YOUR SCOOPS" gallery — real Unsplash gift-box photos saved in /public/img
+// Gallery — uses the branded Scooped box PNG on different coloured backdrops.
+// Same product, four "moods" — keeps the brand consistent across all thumbs.
 export const GALLERY = [
-  { src: '/img/box3.jpg', label: 'Kraft & ribbon' },
-  { src: '/img/box2.jpg', label: 'Pink & gold' },
-  { src: '/img/box5.jpg', label: 'Hand-tied bundle' },
-  { src: '/img/box1.jpg', label: 'Festive stack' },
+  { src: '/img/hero-box.png', label: 'Surprise mix', bg: 'linear-gradient(160deg,#fff5f6 0%,#ffd5e2 100%)', accent: 'star'    },
+  { src: '/img/hero-box.png', label: 'Pink edition', bg: 'linear-gradient(160deg,#ffe1eb 0%,#ffb3cd 100%)', accent: 'hearts'  },
+  { src: '/img/hero-box.png', label: 'Lavender',     bg: 'linear-gradient(160deg,#f4ecff 0%,#e8dcfb 100%)', accent: 'sparkle' },
+  { src: '/img/hero-box.png', label: 'Sunny',        bg: 'linear-gradient(160deg,#fff4cf 0%,#ffe9a0 100%)', accent: 'bow'     },
 ];
