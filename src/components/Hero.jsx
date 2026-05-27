@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import MysteryBox from './MysteryBox.jsx';
+import { StarFill } from './Icon.jsx';
 
 const fade = {
   hidden: { opacity: 0, y: 20 },
@@ -12,20 +13,18 @@ export default function Hero() {
 
   return (
     <header className="relative overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16">
-      {/* soft blurred blobs */}
-      <div className="pointer-events-none absolute -top-24 -right-24 h-[380px] w-[380px] rounded-full opacity-50 blur-3xl"
-           style={{ background: 'var(--lemon)' }} />
-      <div className="pointer-events-none absolute -bottom-28 -left-24 h-[300px] w-[300px] rounded-full opacity-30 blur-3xl"
+      {/* soft blurred coral wash blobs — single colour family, no rainbow */}
+      <div className="pointer-events-none absolute -top-24 -right-24 h-[380px] w-[380px] rounded-full opacity-25 blur-3xl"
+           style={{ background: 'var(--coral)' }} />
+      <div className="pointer-events-none absolute -bottom-28 -left-24 h-[320px] w-[320px] rounded-full opacity-20 blur-3xl"
            style={{ background: 'var(--sage)' }} />
-      <div className="pointer-events-none absolute top-[36%] right-[22%] h-[200px] w-[200px] rounded-full opacity-25 blur-3xl"
-           style={{ background: 'var(--grape)' }} />
 
       <div className="relative z-10 mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-10 px-6 sm:px-7 md:grid-cols-[1.1fr_.9fr]">
         <div>
           <motion.div initial="hidden" animate="show" custom={0} variants={fade}
                       className="mb-5 inline-flex items-center gap-2 rounded-pill border border-line bg-white px-4 py-1.5 text-[13px] font-bold shadow-soft">
             <span className="h-2 w-2 rounded-full bg-sage animate-pulseDot" />
-            Hand-packed &amp; filmed in SA
+            Hand-packed &amp; filmed in South Africa
           </motion.div>
 
           <motion.h1 initial="hidden" animate="show" custom={1} variants={fade}
@@ -53,10 +52,23 @@ export default function Hero() {
           </motion.div>
 
           <motion.div initial="hidden" animate="show" custom={4} variants={fade}
-                      className="mt-9 flex gap-8">
+                      className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
             <Stat n="7–12+" l="items per scoop" />
             <Stat n="R300+" l="value per scoop" />
             <Stat n="2–4" l="day delivery" />
+            <div className="hidden sm:flex items-center gap-2 border-l border-line pl-7">
+              <div className="flex" style={{ color: '#e0a96d' }}>
+                <StarFill style={{ width: 16, height: 16 }} />
+                <StarFill style={{ width: 16, height: 16 }} />
+                <StarFill style={{ width: 16, height: 16 }} />
+                <StarFill style={{ width: 16, height: 16 }} />
+                <StarFill style={{ width: 16, height: 16 }} />
+              </div>
+              <div>
+                <div className="font-display text-lg font-extrabold leading-none">4.7</div>
+                <div className="text-[11px] opacity-55 leading-tight">29 reviews</div>
+              </div>
+            </div>
           </motion.div>
         </div>
 

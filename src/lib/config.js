@@ -17,26 +17,41 @@ export const TIERS = [
 ];
 
 export const WHO = [
-  { id: 'Boy',  emoji: '👦', sub: 'Adventure & cool finds' },
-  { id: 'Girl', emoji: '👧', sub: 'Cute & sparkly treasures' },
-  { id: 'Baby', emoji: '👶', sub: 'Soft & gentle goodies' },
+  { id: 'Boy',  icon: 'Rocket', sub: 'Adventure & cool finds' },
+  { id: 'Girl', icon: 'BowTie', sub: 'Cute & sparkly treasures' },
+  { id: 'Baby', icon: 'Cloud',  sub: 'Soft & gentle goodies' },
 ];
 
 export const CATEGORIES = [
-  { label: 'Stationery',  emoji: '✏️', tint: 'bg-lemon/20' },
-  { label: 'Toys',        emoji: '🧸', tint: 'bg-grape/15' },
-  { label: 'Accessories', emoji: '🎀', tint: 'bg-coral/15' },
-  { label: 'Fidgets',     emoji: '🪀', tint: 'bg-sage/20' },
-  { label: 'Stickers',    emoji: '⭐', tint: 'bg-grape/15' },
-  { label: 'Candy',       emoji: '🍬', tint: 'bg-lemon/20' },
-  { label: 'Keychains',   emoji: '🔑', tint: 'bg-coral/15' },
-  { label: 'Crafts',      emoji: '🎨', tint: 'bg-sage/20' },
+  { label: 'Stationery',  icon: 'Pencil' },
+  { label: 'Toys',        icon: 'Bear' },
+  { label: 'Accessories', icon: 'Ribbon' },
+  { label: 'Fidgets',     icon: 'Fidget' },
+  { label: 'Stickers',    icon: 'StickerStar' },
+  { label: 'Candy',       icon: 'Candy' },
+  { label: 'Keychains',   icon: 'Key' },
+  { label: 'Crafts',      icon: 'Palette' },
 ];
 
 export const REVIEWS = [
-  { stars: 5, quote: "My daughter screamed when she opened it. Genuinely the best R400 I've spent.", who: 'Aisha N. · 3 Scoops, Girl' },
-  { stars: 5, quote: "Got the 6-scoop for my son's birthday — kept him busy for an entire afternoon.", who: 'Jason vd M. · 6 Scoops, Boy' },
-  { stars: 4, quote: "Lovely packaging and the TikTok video they sent us was the cutest touch.", who: 'Zanele D. · 1 Scoop, Baby' },
+  { stars: 5, name: 'Aisha Nkosi',         quote: "My daughter screamed when she opened it. Genuinely the best R400 I've spent.", who: '3 Scoops · Girl',  city: 'Pretoria' },
+  { stars: 5, name: 'Jason vd Merwe',      quote: "Got the 6-scoop for my son's birthday — kept him busy for an entire afternoon.", who: '6 Scoops · Boy',  city: 'Cape Town' },
+  { stars: 4, name: 'Zanele Dlamini',      quote: "Lovely packaging and the TikTok video they sent us was the cutest touch.",      who: '1 Scoop · Baby', city: 'Joburg'    },
+];
+
+export const FAQS = [
+  { q: 'How fast is delivery?',
+    a: 'We pack within 24 hours and ship via Courier Guy. Most orders arrive in 2–4 working days, anywhere in South Africa.' },
+  { q: "What if I get duplicates?",
+    a: "We try our best to keep each box unique. If you pull more than two of the same item type in one box, we'll throw in a freebie on your next order — just message us with a photo." },
+  { q: 'What age range are these for?',
+    a: 'Boy and Girl scoops are designed for ages 4–12. Baby scoops are designed for 0–3 (no small parts, soft items only). If you have a specific age in mind, leave a note at checkout.' },
+  { q: 'Can I tell you what they like?',
+    a: 'Yes — the "Colour / interest note" field at checkout is read by the packer. We use it to bias the selection (e.g. dinosaurs, unicorns, pink).' },
+  { q: 'Do you do refunds?',
+    a: "Because every box is a surprise, we don't offer refunds on opened boxes. If your parcel arrives damaged, message us within 48 hours with photos and we'll replace it free." },
+  { q: 'Is this a good gift?',
+    a: "It's our most-ordered use case. Add a gift note at checkout and we'll include a hand-written card. The unboxing video we send you afterward is perfect for sharing on the day." },
 ];
 
 // "PICK YOUR SCOOPS" gallery — real Unsplash gift-box photos saved in /public/img

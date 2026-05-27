@@ -7,6 +7,7 @@ import Builder from '../components/Builder.jsx';
 import WhatsInside from '../components/WhatsInside.jsx';
 import Reviews from '../components/Reviews.jsx';
 import Trust from '../components/Trust.jsx';
+import FAQ from '../components/FAQ.jsx';
 import Footer from '../components/Footer.jsx';
 import CheckoutModal from '../components/CheckoutModal.jsx';
 import InvoiceModal from '../components/InvoiceModal.jsx';
@@ -43,6 +44,7 @@ export default function Storefront() {
       <WhatsInside />
       <Reviews />
       <Trust />
+      <FAQ />
       <Footer />
 
       <CheckoutModal
