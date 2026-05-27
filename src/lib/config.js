@@ -23,20 +23,20 @@ export const WHO = [
 ];
 
 export const CATEGORIES = [
-  { label: 'Stationery',  icon: 'Pencil' },
-  { label: 'Toys',        icon: 'Bear' },
-  { label: 'Accessories', icon: 'Ribbon' },
-  { label: 'Fidgets',     icon: 'Fidget' },
-  { label: 'Stickers',    icon: 'StickerStar' },
-  { label: 'Candy',       icon: 'Candy' },
-  { label: 'Keychains',   icon: 'Key' },
-  { label: 'Crafts',      icon: 'Palette' },
+  { label: 'Stationery',  icon: 'Pencil',      bg: 'bg-lemon'    },
+  { label: 'Toys',        icon: 'Bear',        bg: 'bg-pink-200' },
+  { label: 'Accessories', icon: 'Ribbon',      bg: 'bg-pink-100' },
+  { label: 'Fidgets',     icon: 'Fidget',      bg: 'bg-lavender' },
+  { label: 'Stickers',    icon: 'StickerStar', bg: 'bg-lemon'    },
+  { label: 'Candy',       icon: 'Candy',       bg: 'bg-pink-200' },
+  { label: 'Keychains',   icon: 'Key',         bg: 'bg-sky'      },
+  { label: 'Crafts',      icon: 'Palette',     bg: 'bg-peach'    },
 ];
 
 export const REVIEWS = [
-  { stars: 5, name: 'Aisha Nkosi',         quote: "My daughter screamed when she opened it. Genuinely the best R400 I've spent.", who: '3 Scoops · Girl',  city: 'Pretoria' },
-  { stars: 5, name: 'Jason vd Merwe',      quote: "Got the 6-scoop for my son's birthday — kept him busy for an entire afternoon.", who: '6 Scoops · Boy',  city: 'Cape Town' },
-  { stars: 4, name: 'Zanele Dlamini',      quote: "Lovely packaging and the TikTok video they sent us was the cutest touch.",      who: '1 Scoop · Baby', city: 'Joburg'    },
+  { stars: 5, name: 'Aisha N.',     quote: "My daughter screamed when she opened it. Genuinely the best R400 I've spent.", who: '3 Scoops · Girl',  city: 'Pretoria', avatar: '/img/avatars/a1.jpg' },
+  { stars: 5, name: 'Jason vd M.',  quote: "Got the 6-scoop for my son's birthday — kept him busy for an entire afternoon.", who: '6 Scoops · Boy',  city: 'Cape Town', avatar: '/img/avatars/a4.jpg' },
+  { stars: 4, name: 'Zanele D.',    quote: "Lovely packaging and the TikTok video they sent us was the cutest touch.",      who: '1 Scoop · Baby', city: 'Joburg',    avatar: '/img/avatars/a5.jpg' },
 ];
 
 export const FAQS = [
