@@ -39,10 +39,10 @@ export const REVIEWS = [
   { stars: 4, quote: "Lovely packaging and the TikTok video they sent us was the cutest touch.", who: 'Zanele D. · 1 Scoop, Baby' },
 ];
 
-// "PICK YOUR SCOOPS" gallery thumbnails — placeholder slots
+// "PICK YOUR SCOOPS" gallery — real Unsplash gift-box photos saved in /public/img
 export const GALLERY = [
-  { label: 'Box photo 1' },
-  { label: 'Box photo 2' },
-  { label: 'Box photo 3' },
-  { label: 'Box photo 4' },
+  { src: '/img/box3.jpg', label: 'Kraft & ribbon' },
+  { src: '/img/box2.jpg', label: 'Pink & gold' },
+  { src: '/img/box5.jpg', label: 'Hand-tied bundle' },
+  { src: '/img/box1.jpg', label: 'Festive stack' },
 ];

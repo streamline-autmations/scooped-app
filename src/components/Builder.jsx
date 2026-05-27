@@ -25,12 +25,25 @@ export default function Builder({ selection, setSelection, onCheckout }) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.05fr] md:gap-12 items-start">
           {/* gallery */}
           <Reveal>
-            <Placeholder label={GALLERY[activeThumb]?.label || 'Box photo'} className="shadow-soft" />
+            <div className="overflow-hidden rounded-card border border-line bg-white shadow-soft"
+                 style={{ aspectRatio: '1 / 1' }}>
+              {GALLERY[activeThumb]?.src ? (
+                <img src={GALLERY[activeThumb].src} alt={GALLERY[activeThumb].label}
+                     className="h-full w-full object-cover transition duration-500"
+                     loading="lazy" />
+              ) : (
+                <Placeholder label={GALLERY[activeThumb]?.label || 'Box photo'} />
+              )}
+            </div>
             <div className="mt-3 grid grid-cols-4 gap-2.5">
               {GALLERY.map((g, i) => (
                 <button key={i} onClick={() => setActiveThumb(i)}
-                        className={`overflow-hidden rounded-xl border transition ${i === activeThumb ? 'border-ink ring-2 ring-ink/10' : 'border-line opacity-70 hover:opacity-100'}`}>
-                  <Placeholder label={`#${i + 1}`} deep className="border-0 !rounded-none" />
+                        className={`overflow-hidden rounded-xl border transition ${i === activeThumb ? 'border-ink ring-2 ring-ink/10' : 'border-line opacity-65 hover:opacity-100'}`}
+                        style={{ aspectRatio: '1 / 1' }}
+                        aria-label={g.label}>
+                  {g.src
+                    ? <img src={g.src} alt={g.label} className="h-full w-full object-cover" loading="lazy" />
+                    : <Placeholder label={`#${i + 1}`} deep className="border-0 !rounded-none" />}
                 </button>
               ))}
             </div>
